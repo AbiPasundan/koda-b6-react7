@@ -1,101 +1,48 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
-// function Header() {
-//   return (
-//     <section className="flex flex-row justify-between items-center p-5 bg-purple-400">
-//       <div>Brand</div>
-//       <h1>Website Todo</h1>
-//     </section>
-//   )
-// }
-
-// function ButtonNewTask() {
-//   // const intervalId = intervalRef.current;
-//   // const ref = useRef(null)
-  
-//   return <div onClick={() => toggleShow(true)} className="absolute left-50 -top-5 bg-purple-400 p-3 rounded-full">New Task</div>
-// }
-
-
-
-// function NotedTodo({title, children}) {
-//   return (
-//     <>
-//       <h1>{title}</h1>
-//       {children}
-//     </>
-//   )
-// }
-
-// function Todo() {
-//   return (
-//       <section className="flex flex-col gap-5 bg-red-50 px-5 py-10 relative">
-//         <NotedTodo title="Completed" >
-//           <div className="flex flex-row gap-5 accent-purple-400 [&>input]:w-10 [&>input]:hover:accent-purple-700 ">
-//             <input type="checkbox" name="todo" id="todo" />
-//             <label htmlFor="todo">Style creation</label>
-//           </div>
-//         </NotedTodo>
-//         <ButtonNewTask />
-//       </section>
-//   )
-// }
-
-// function Modal() {
-//   return (
-//     <>
-//       <section className={"z-100 bg-purple-500 w-122 h-30 top-10 absolute text-white text-center"+{isOpen}}>
-//         <h1 className="py-5">Input Form</h1>
-//         <label htmlFor="form" className="border border-1 border-black  py-3 px-5">
-//           <input type="text" name="form" id="form" placeholder="Mau ngerjain apa?" className="border-none outline-none" />
-//           <input type="submit" name="button" id="button" placeholder="Mau ngerjain apa?" className="border-none outline-none" />
-//         </label>
-//       </section>
-//     </>
-//   )
-// }
-
-// function App() {
-//   const [isOpen, setIsOpen] = useState(false)
-//   const toggleShow = () => {
-//     setIsOpen(!isOpen)
-//     console.log("Check");
-//   }
-//   return (
-//     <>
-//       <main className="flex flex-col gap-13 relative my-32 mx-auto max-w-[50%]">
-//         <Header onClick={() => toggleShow(true)} />
-//         <h1 onClick={() => toggleShow(true)} >Hello Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam unde sunt architecto, iure voluptatibus id. Veritatis quia sapiente, veniam expedita dicta dignissimos cum sequi, similique tempora delectus neque ipsam voluptate?</h1> 
-//         <Todo />
-//       </main>
-//     </>
-//   );
-// }
 function App() {
-  console.log(window)
+  const formInputRef = useRef(null)
+
   const [isOpen, setIsOpen] = useState(false)
-  const toggleShow = () => setIsOpen(prev => !prev)
+  const toggleShow = () => {
+    setIsOpen(prev => !prev)
+    if (!isOpen) {
+      setTimeout(() => formInputRef.current?.focus(), 0)
+    }
+  }
   return (
     <>
       <main className="flex flex-col gap-13 relative my-32 mx-auto max-w-[50%]">
+        {/* title */}
         <section className="flex flex-row justify-between items-center p-5 bg-purple-400">
          <div>Brand</div>
          <h1>Website Todo</h1>
         </section>
+        {/* main kontent */}
         <section className="flex flex-col gap-5 bg-red-50 px-5 py-10 relative">
-          <h1>Completed</h1>
-           <div className="flex flex-row gap-5 accent-purple-400 [&>input]:w-10 [&>input]:hover:accent-purple-700 ">
-             <input type="checkbox" name="todo" id="todo" />
-             <label htmlFor="todo">Style creation</label>
-           </div>
-         <div onClick={() => toggleShow(true)} className="absolute left-0 -top-10 bg-purple-400 p-3 rounded-full">New Task</div>
+          <h1>Todo</h1>
+            <div className="flex flex-row gap-5 items-center accent-purple-400 [&>input]:w-10 [&>input]:hover:accent-purple-700">
+              <input type="checkbox" />
+              <label className='line-through text-gray-500'>
+                Style creation
+              </label>
+              <button  className="ml-auto text-red-500 hover:text-red-700" >
+                Delete
+              </button>
+            </div>
+         <div onClick={toggleShow} className="absolute cursor-pointer left-0 -top-10 bg-purple-400 p-3 rounded-full">New Task</div>
         </section>
+        {/* modal */}
         <section className={`${isOpen ? 'block' : 'hidden'} z-100 bg-purple-500 w-122 h-30 top-50 absolute text-white text-center`}>
          <h1 className="py-5">Input Form</h1>
-         <label htmlFor="form" className="border border-1 border-black  py-3 px-5">
-           <input type="text" name="form" id="form" placeholder="Mau ngerjain apa?" className="border-none outline-none" />
-           <input type="submit" name="button" id="button" value="Submit" className="border-none outline-none" />
-         </label>
+         <form className="border border-1 border-black py-3 px-5">
+           <input 
+             type="text" 
+             placeholder="Mau ngerjain apa?" 
+             className="border-none outline-none bg-transparent text-white placeholder-white" 
+           />
+           <button type="submit" className="ml-2 bg-white text-purple-500 px-3 py-1 rounded">Submit</button>
+         </form>
         </section>
       </main>
     </>
